@@ -13,8 +13,14 @@ const { apiLimiter, authLimiter } = require('./middleware/rateLimiter');
 const { generateNotifications } = require('./controllers/notificationController');
 const { checkReorderPoints } = require('./controllers/inventoryController');
 
-// Load env vars
-dotenv.config();
+// Load env vars (check root, then server dir)
+const fs = require('fs');
+const rootEnv = path.join(__dirname, '..', '.env');
+if (fs.existsSync(rootEnv)) {
+    dotenv.config({ path: rootEnv });
+} else {
+    dotenv.config();
+}
 
 // Connect to MongoDB
 connectDB();
@@ -81,9 +87,17 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString(), version: '5.0.0' });
 });
 
-// Error middleware
-app.use(notFound);
-app.use(errorHandler);
+// ── Serve React build in production ──
+if (process.env.NODE_ENV === 'production') {
+    app.use(express.static(path.join(__dirname, '..', 'client', 'dist')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '..', 'client', 'dist', 'index.html'));
+    });
+} else {
+    // Error middleware (dev only — production serves index.html for all non-API routes)
+    app.use(notFound);
+    app.use(errorHandler);
+}
 
 // ── Cron Jobs ──
 

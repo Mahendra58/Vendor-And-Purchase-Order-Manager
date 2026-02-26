@@ -1,0 +1,14 @@
+{
+    "name": "vendor-po-manager",
+    "version": "1.0.0",
+    "description": "Vendor & Purchase Order Manager - Full Stack MERN Application",
+    "scripts": {
+        "start": "node server/server.js",
+        "build": "npm install --prefix server && npm install --prefix client && npm run build --prefix client",
+        "dev:server": "cd server && node server.js",
+        "dev:client": "cd client && npm run dev"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
