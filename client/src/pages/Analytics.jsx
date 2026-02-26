@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import api from '../lib/api';
 import {
     PieChart, Pie, Cell, BarChart, Bar, LineChart, Line,
@@ -7,9 +8,10 @@ import {
 import { TrendingUp, Award, DollarSign, Clock } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const COLORS = ['#6366f1', '#f59e0b', '#ef4444', '#10b981', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+const COLORS = ['#10b981', '#14b8a6', '#f59e0b', '#6366f1', '#8b5cf6', '#ec4899', '#ef4444', '#f97316'];
 
 const Analytics = () => {
+    const { palette } = useTheme();
     const [aging, setAging] = useState([]);
     const [vendorSpend, setVendorSpend] = useState([]);
     const [monthlyGrowth, setMonthlyGrowth] = useState([]);
@@ -76,16 +78,16 @@ const Analytics = () => {
                 {/* Vendor Spend */}
                 <div className="card">
                     <div className="flex items-center gap-2 mb-4">
-                        <DollarSign className="w-5 h-5 text-emerald-500" />
+                        <DollarSign className="w-5 h-5 text-indigo-500" />
                         <h3 className="font-bold text-slate-800 dark:text-white">Vendor Spend Distribution</h3>
                     </div>
                     <ResponsiveContainer width="100%" height={250}>
                         <BarChart data={vendorSpend.slice(0, 8)}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(226,232,240,0.4)" />
                             <XAxis dataKey="vendorName" tick={{ fontSize: 11 }} />
                             <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
                             <Tooltip formatter={(v) => `₹${v.toLocaleString()}`} />
-                            <Bar dataKey="totalSpend" fill="#6366f1" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="totalSpend" fill={palette.hex500} radius={[6, 6, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </div>
@@ -98,11 +100,11 @@ const Analytics = () => {
                     </div>
                     <ResponsiveContainer width="100%" height={250}>
                         <LineChart data={monthlyGrowth}>
-                            <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
+                            <CartesianGrid strokeDasharray="3 3" stroke="rgba(226,232,240,0.4)" />
                             <XAxis dataKey="label" tick={{ fontSize: 11 }} />
                             <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => `₹${(v / 1000).toFixed(0)}k`} />
                             <Tooltip formatter={(v, name) => name === 'total' ? `₹${v.toLocaleString()}` : `${v}%`} />
-                            <Line type="monotone" dataKey="total" stroke="#6366f1" strokeWidth={2.5} dot={{ r: 4 }} />
+                            <Line type="monotone" dataKey="total" stroke={palette.hex500} strokeWidth={2} dot={{ r: 3, fill: palette.hex500 }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </div>

@@ -27,13 +27,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                             toastOptions={{
                                 duration: 3000,
                                 style: {
-                                    borderRadius: '14px',
-                                    background: '#1e293b',
+                                    borderRadius: '16px',
+                                    background: 'rgba(15, 23, 42, 0.9)',
+                                    backdropFilter: 'blur(12px)',
                                     color: '#f8fafc',
                                     fontSize: '13px',
                                     fontWeight: '500',
                                     padding: '12px 16px',
-                                    boxShadow: '0 10px 40px -10px rgba(0,0,0,0.3)',
+                                    border: '1px solid rgba(51, 65, 85, 0.3)',
+                                    boxShadow: '0 10px 40px -10px rgba(0,0,0,0.4)',
                                 },
                                 success: {
                                     iconTheme: { primary: '#10b981', secondary: '#fff' },

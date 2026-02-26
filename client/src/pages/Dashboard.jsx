@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTheme } from '../context/ThemeContext';
 import api from '../lib/api';
 import StatsCard from '../components/StatsCard';
 import {
@@ -22,7 +23,7 @@ import {
     BarChart,
     Bar,
 } from 'recharts';
-import { useTheme } from '../context/ThemeContext';
+
 
 /* ── Skeleton Loader ── */
 const DashboardSkeleton = () => (
@@ -64,7 +65,7 @@ const DashboardSkeleton = () => (
 const Dashboard = () => {
     const [stats, setStats] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { dark } = useTheme();
+    const { dark, palette } = useTheme();
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -96,9 +97,11 @@ const Dashboard = () => {
         return `₹${val}`;
     };
 
-    const chartTextColor = dark ? '#94a3b8' : '#94a3b8';
-    const gridColor = dark ? '#1e293b' : '#f1f5f9';
-    const tooltipBg = dark ? '#0f172a' : '#1e293b';
+    const chartTextColor = dark ? '#64748b' : '#94a3b8';
+    const gridColor = dark ? 'rgba(30,41,59,0.5)' : 'rgba(241,245,249,0.6)';
+    const tooltipBg = dark ? 'rgba(15,23,42,0.95)' : 'rgba(30,41,59,0.95)';
+    const themeColor = palette.hex500;
+    const themeLighter = palette.hex400;
 
     return (
         <div className="space-y-6">
@@ -129,8 +132,8 @@ const Dashboard = () => {
                             <h2 className="text-lg font-bold text-slate-800 dark:text-white">Monthly Purchase Trend</h2>
                             <p className="text-sm text-slate-500 dark:text-slate-400">Last 12 months</p>
                         </div>
-                        <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary-500/20">
-                            <TrendingUp className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 bg-indigo-50 dark:bg-indigo-500/10 rounded-xl flex items-center justify-center">
+                            <TrendingUp className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
                         </div>
                     </div>
                     <div className="h-72">
@@ -138,8 +141,8 @@ const Dashboard = () => {
                             <AreaChart data={stats.monthlyTrend}>
                                 <defs>
                                     <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.2} />
-                                        <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                                        <stop offset="5%" stopColor={themeColor} stopOpacity={0.15} />
+                                        <stop offset="95%" stopColor={themeColor} stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
                                 <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
@@ -148,16 +151,17 @@ const Dashboard = () => {
                                 <Tooltip
                                     contentStyle={{
                                         backgroundColor: tooltipBg,
-                                        border: 'none',
-                                        borderRadius: '14px',
+                                        border: '1px solid rgba(255,255,255,0.1)',
+                                        borderRadius: '12px',
                                         color: '#f8fafc',
                                         fontSize: '12px',
                                         fontWeight: '500',
+                                        backdropFilter: 'blur(12px)',
                                         boxShadow: '0 10px 40px -10px rgba(0,0,0,0.3)',
                                     }}
                                     formatter={(value) => [`₹${value.toLocaleString()}`, 'Amount']}
                                 />
-                                <Area type="monotone" dataKey="totalAmount" stroke="#3b82f6" strokeWidth={2.5} fill="url(#colorAmount)" dot={false} activeDot={{ r: 5, fill: '#3b82f6', strokeWidth: 2, stroke: '#fff' }} />
+                                <Area type="monotone" dataKey="totalAmount" stroke={themeColor} strokeWidth={2} fill="url(#colorAmount)" dot={false} activeDot={{ r: 4, fill: themeColor, strokeWidth: 2, stroke: '#fff' }} />
                             </AreaChart>
                         </ResponsiveContainer>
                     </div>
@@ -167,14 +171,14 @@ const Dashboard = () => {
                 <div className="card flex flex-col animate-slide-up" style={{ animationDelay: '300ms', animationFillMode: 'both' }}>
                     <div className="flex items-center justify-between mb-6">
                         <h2 className="text-lg font-bold text-slate-800 dark:text-white">Top Vendor</h2>
-                        <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/20">
-                            <Award className="w-5 h-5 text-white" />
+                        <div className="w-10 h-10 bg-amber-100/60 dark:bg-amber-500/10 rounded-xl flex items-center justify-center">
+                            <Award className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                         </div>
                     </div>
                     {stats.topVendor ? (
                         <div className="flex-1 flex flex-col items-center justify-center text-center">
-                            <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl flex items-center justify-center mb-4 shadow-xl shadow-amber-500/25 hover:scale-105 transition-transform duration-300">
-                                <Award className="w-10 h-10 text-white" />
+                            <div className="w-20 h-20 bg-amber-100/60 dark:bg-amber-500/10 rounded-2xl flex items-center justify-center mb-4 hover:scale-105 transition-transform duration-300">
+                                <Award className="w-10 h-10 text-amber-600 dark:text-amber-400" />
                             </div>
                             <h3 className="text-xl font-extrabold text-slate-800 dark:text-white mb-1">{stats.topVendor.name}</h3>
                             <div className="flex items-center gap-4 mt-4">
@@ -210,14 +214,14 @@ const Dashboard = () => {
                                 <XAxis type="number" tick={{ fontSize: 11, fill: chartTextColor }} axisLine={false} tickLine={false} tickFormatter={(v) => formatCurrency(v)} />
                                 <YAxis type="category" dataKey="vendorName" tick={{ fontSize: 12, fill: dark ? '#94a3b8' : '#64748b', fontWeight: 500 }} axisLine={false} tickLine={false} width={150} />
                                 <Tooltip
-                                    contentStyle={{ backgroundColor: tooltipBg, border: 'none', borderRadius: '14px', color: '#f8fafc', fontSize: '12px', fontWeight: '500', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.3)' }}
+                                    contentStyle={{ backgroundColor: tooltipBg, border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', color: '#f8fafc', fontSize: '12px', fontWeight: '500', backdropFilter: 'blur(12px)', boxShadow: '0 10px 40px -10px rgba(0,0,0,0.3)' }}
                                     formatter={(value) => [`₹${value.toLocaleString()}`, 'Total Spent']}
                                 />
                                 <Bar dataKey="totalSpent" fill="url(#barGradient)" radius={[0, 8, 8, 0]} barSize={22} />
                                 <defs>
                                     <linearGradient id="barGradient" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stopColor="#3b82f6" />
-                                        <stop offset="100%" stopColor="#60a5fa" />
+                                        <stop offset="0%" stopColor={themeColor} />
+                                        <stop offset="100%" stopColor={themeLighter} />
                                     </linearGradient>
                                 </defs>
                             </BarChart>

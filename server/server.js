@@ -74,6 +74,7 @@ app.use('/api/reconciliation', require('./routes/reconciliationRoutes'));
 app.use('/api/finance', require('./routes/financeRoutes'));
 app.use('/api/journal-entries', require('./routes/journalRoutes'));
 app.use('/api/accounting', require('./routes/accountingRoutes'));
+app.use('/api/search', require('./routes/searchRoutes'));
 
 // Health check
 app.get('/api/health', (req, res) => {

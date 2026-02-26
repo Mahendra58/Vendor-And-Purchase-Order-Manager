@@ -29,7 +29,7 @@ const NotificationBell = () => {
 
     useEffect(() => {
         fetchNotifications();
-        const interval = setInterval(fetchNotifications, 30000); // Poll every 30s
+        const interval = setInterval(fetchNotifications, 30000);
         return () => clearInterval(interval);
     }, []);
 
@@ -65,19 +65,19 @@ const NotificationBell = () => {
         <div className="relative" ref={ref}>
             <button
                 onClick={() => setOpen(!open)}
-                className="relative p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all duration-200"
+                className="relative p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 hover:bg-slate-100/50 dark:hover:bg-slate-800/30 rounded-xl transition-all duration-200 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-700/20"
             >
-                <Bell className="w-5 h-5" />
+                <Bell className="w-[18px] h-[18px]" />
                 {unreadCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center animate-pulse">
+                    <span className="absolute -top-0.5 -right-0.5 w-4.5 h-4.5 bg-red-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center shadow-sm">
                         {unreadCount > 9 ? '9+' : unreadCount}
                     </span>
                 )}
             </button>
 
             {open && (
-                <div className="absolute right-0 top-full mt-2 w-80 bg-white dark:bg-surface-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-700 z-50 overflow-hidden animate-scale-in">
-                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100 dark:border-slate-800">
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-2xl shadow-glass-lg border border-white/60 dark:border-slate-700/30 z-50 overflow-hidden animate-scale-in">
+                    <div className="flex items-center justify-between px-4 py-3 border-b border-slate-100/60 dark:border-slate-800/40">
                         <h3 className="font-bold text-sm text-slate-800 dark:text-white">Notifications</h3>
                         {unreadCount > 0 && (
                             <button onClick={markAllRead} className="text-xs text-primary-600 dark:text-primary-400 hover:underline font-semibold flex items-center gap-1">
@@ -94,12 +94,11 @@ const NotificationBell = () => {
                                 <div
                                     key={n._id}
                                     onClick={() => !n.read && markOneRead(n._id)}
-                                    className={`flex gap-3 px-4 py-3 border-b border-slate-50 dark:border-slate-800/50 cursor-pointer transition-colors ${n.read ? 'opacity-60' : 'bg-primary-50/30 dark:bg-primary-900/10 hover:bg-primary-50/50 dark:hover:bg-primary-900/20'
-                                        }`}
+                                    className={`flex gap-3 px-4 py-3 border-b border-slate-100/40 dark:border-slate-800/30 cursor-pointer transition-colors ${n.read ? 'opacity-50' : 'hover:bg-primary-50/30 dark:hover:bg-primary-900/15'}`}
                                 >
                                     <div className="mt-0.5">{typeIcons[n.type] || typeIcons.info}</div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-sm text-slate-700 dark:text-slate-200 leading-snug">{n.message}</p>
+                                        <p className="text-[13px] text-slate-700 dark:text-slate-200 leading-snug">{n.message}</p>
                                         <p className="text-[11px] text-slate-400 mt-1">{timeAgo(n.createdAt)}</p>
                                     </div>
                                     {!n.read && <div className="w-2 h-2 bg-primary-500 rounded-full mt-1.5 flex-shrink-0" />}

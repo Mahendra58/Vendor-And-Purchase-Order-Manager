@@ -10,8 +10,8 @@ const AccessDenied = () => {
         <div className="min-h-[70vh] flex items-center justify-center animate-fade-in">
             <div className="text-center space-y-6 max-w-md mx-auto">
                 {/* Icon */}
-                <div className="w-24 h-24 bg-gradient-to-br from-red-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto shadow-2xl shadow-red-500/30 animate-scale-in">
-                    <ShieldOff className="w-12 h-12 text-white" />
+                <div className="w-24 h-24 bg-red-100/60 dark:bg-red-500/10 rounded-3xl flex items-center justify-center mx-auto animate-scale-in">
+                    <ShieldOff className="w-12 h-12 text-red-500 dark:text-red-400" />
                 </div>
 
                 {/* Text */}

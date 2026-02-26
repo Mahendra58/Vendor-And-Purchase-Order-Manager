@@ -11,7 +11,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             requestAnimationFrame(() => setVisible(true));
         } else {
             setVisible(false);
-            const timer = setTimeout(() => setAnimating(false), 250);
+            const timer = setTimeout(() => setAnimating(false), 300);
             return () => clearTimeout(timer);
         }
     }, [isOpen]);
@@ -20,35 +20,31 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
 
     const sizeClasses = {
         sm: 'max-w-md',
-        md: 'max-w-2xl',
-        lg: 'max-w-4xl',
-        xl: 'max-w-6xl',
+        md: 'max-w-lg',
+        lg: 'max-w-2xl',
+        xl: 'max-w-4xl',
     };
 
     return (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[60] flex justify-end">
             {/* Backdrop */}
             <div
-                className={`absolute inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-md transition-opacity duration-250 ${visible ? 'opacity-100' : 'opacity-0'
-                    }`}
+                className={`absolute inset-0 bg-black/20 dark:bg-black/40 backdrop-blur-[2px] transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}
                 onClick={onClose}
             />
 
-            {/* Modal card */}
+            {/* Slide-over panel */}
             <div
-                className={`relative bg-white dark:bg-surface-850 rounded-2xl shadow-2xl dark:shadow-black/40 w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col border border-slate-200/50 dark:border-slate-700/50 transition-all duration-250 ${visible
-                        ? 'opacity-100 scale-100 translate-y-0'
-                        : 'opacity-0 scale-95 translate-y-4'
-                    }`}
+                className={`relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl w-full ${sizeClasses[size]} h-full flex flex-col border-l border-white/40 dark:border-slate-700/30 shadow-2xl transition-transform duration-300 ease-out ${visible ? 'translate-x-0' : 'translate-x-full'}`}
             >
                 {/* Header */}
-                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100/60 dark:border-slate-800/50 shrink-0">
                     <h2 className="text-lg font-bold text-slate-800 dark:text-white">{title}</h2>
                     <button
                         onClick={onClose}
-                        className="p-2 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all duration-200 group"
+                        className="p-2 hover:bg-slate-100/70 dark:hover:bg-slate-800/40 rounded-xl transition-all duration-200 group"
                     >
-                        <X className="w-5 h-5 text-slate-400 group-hover:rotate-90 transition-transform duration-200" />
+                        <X className="w-5 h-5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
                     </button>
                 </div>
 
